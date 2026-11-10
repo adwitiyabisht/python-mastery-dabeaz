@@ -1,4 +1,12 @@
-with open('Data/portfolio.dat', 'rt') as f:
-    cost = sum(int(line.split()[1]) * float(line.split()[2]) for line in f)
+def portfolio_cost(filename):
+    with open(filename, 'rt') as f:
+        cost = 0
+        for line in f:
+            try:
+                fields = line.split()
+                cost += int(fields[1]) * float(fields[2])
+            except ValueError as e:
+                print(f"Couldn't parse: {line}")
+                print(f"Reason: {e}")
 
-print(cost)
+        return cost
