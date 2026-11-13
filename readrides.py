@@ -44,6 +44,35 @@ class RideData(collections.abc.Sequence):
         self.daytypes.append(d['daytype'])
         self.numrides.append(d['rides'])
 
+class DataCollection:
+    def __init__(self, headers):
+        self.columns = {name: [] for name in headers}
+
+    def __len__(self):
+        for column in self.columns.values():
+            return len(column)
+
+    def __getitem__(self, index):
+        record = {}
+
+        for name in self.columns:
+            record[name] = self.columns[name][index]
+
+        return record
+
+def read_csv_as_columns(filename, types):
+    with open(filename) as f:
+        rows = csv.reader(f)
+        headers = next(rows)
+
+        data = DataCollection(headers)
+
+        for row in rows:
+            for name, func, val in zip(headers, types, row):
+                data.columns[name].append(func(val))
+
+    return data
+
 def read_rides_as_tuples(filename):
     '''
     Read the bus ride data as a list of tuples
