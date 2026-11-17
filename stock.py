@@ -7,6 +7,13 @@ class Stock:
         self.shares = shares
         self.price = price
 
+    def __repr__(self):
+        return f"Stock({self.name!r}, {self.shares!r}, {self.price!r})"
+
+    def __eq__(self, other):
+        return isinstance(other, Stock) and ((self.name, self.shares, self.price) ==
+                                             (other.name, other.shares, other.price))
+
     @property
     def shares(self):
         return self._shares
@@ -67,4 +74,5 @@ if __name__ == '__main__':
     import tableformat
 
     portfolio = read_portfolio('Data/portfolio.csv')
-    tableformat.print_table(portfolio, ['name', 'shares', 'price'])
+    fmt = tableformat.create_formatter('csv')
+    tableformat.print_table(portfolio, ['name', 'shares', 'price'], fmt)
