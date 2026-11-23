@@ -33,5 +33,10 @@ class InstanceCSVParser(CSVParser):
     def make_record(self, headers, row):
         return self.cls.from_row(row)
 
-def read_csv_as_dicts(filename):
-    
+def read_csv_as_dicts(filename, types):
+    parser = DictCSVParser(types)
+    return parser.parse(filename)
+
+def read_csv_as_instance(filename, types):
+    parser = InstanceCSVParser(types)
+    return parser.parse(filename)
